@@ -25,7 +25,6 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Label,
 } from "recharts";
 
 export default function Dashboard() {
