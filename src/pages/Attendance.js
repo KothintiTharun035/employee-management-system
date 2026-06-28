@@ -20,7 +20,7 @@ export default function Attendance() {
 
   const [selectedDate, setSelectedDate] = useState(currentDate);
   const [selectedDepartment, setSelectedDepartment] = useState("ALL");
-  const [viewStatus, setViewStatus] = useState("ALL");
+  const [viewStatus, setViewStatus] = useState("EMPLOYEES");
 
   useEffect(() => {
     loadData();
@@ -86,6 +86,7 @@ export default function Attendance() {
   ).length;
 
   const totalMarked = filteredAttendance.length;
+  const totalEmployees = employees.length;  
   console.log(employees);
   console.log(attendance);
 
@@ -120,64 +121,83 @@ export default function Attendance() {
       </div>
 
       <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-          gap: "15px",
-          marginBottom: "20px",
-        }}
-      >
-        <div className="card attendance-card"  // Present"
-          style={{
-          textAlign: "center",
-          cursor: "pointer",
-          border: viewStatus === "PRESENT" ? "2px solid #22c55e" : ""
-        }}
-        onClick={() => setViewStatus("PRESENT")}
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(5, 1fr)",
+    gap: "15px",
+    marginBottom: "20px",
+  }}
 >
-        <h3>✅ Present</h3>
-        <h2>{presentCount}</h2>
-      </div>
+  {/* Total Employees */}
+  <div
+    className="card attendance-card"
+    style={{
+      textAlign: "center",
+      cursor: "pointer",
+      border: viewStatus === "EMPLOYEES" ? "2px solid #2563eb" : "",
+    }}
+    onClick={() => setViewStatus("EMPLOYEES")}
+  >
+    <h3>👥 Total Employees</h3>
+    <h2>{totalEmployees}</h2>
+  </div>
 
-        <div
-        className="card attendance-card"
-        style={{
-        textAlign: "center",
-        cursor: "pointer",
-        border: viewStatus === "ABSENT" ? "2px solid red" : ""
-        }}
-        onClick={() => setViewStatus("ABSENT")}
->
-        <h3>❌ Absent</h3>
-        <h2>{absentCount}</h2>
-      </div>
+  {/* Present */}
+  <div
+    className="card attendance-card"
+    style={{
+      textAlign: "center",
+      cursor: "pointer",
+      border: viewStatus === "PRESENT" ? "2px solid #22c55e" : "",
+    }}
+    onClick={() => setViewStatus("PRESENT")}
+  >
+    <h3>✅ Present</h3>
+    <h2>{presentCount}</h2>
+  </div>
 
-          <div
-        className="card attendance-card"
-        style={{
-        textAlign: "center",
-        cursor: "pointer",
-        border: viewStatus === "LEAVE" ? "2px solid orange" : ""
-        }}
-        onClick={() => setViewStatus("LEAVE")}
->
-      <h3>🏖 Leave</h3>
-      <h2>{leaveCount}</h2>
-      </div>
+  {/* Absent */}
+  <div
+    className="card attendance-card"
+    style={{
+      textAlign: "center",
+      cursor: "pointer",
+      border: viewStatus === "ABSENT" ? "2px solid red" : "",
+    }}
+    onClick={() => setViewStatus("ABSENT")}
+  >
+    <h3>❌ Absent</h3>
+    <h2>{absentCount}</h2>
+  </div>
 
-        <div
-        className="card attendance-card"
-        style={{
-        textAlign: "center",
-        cursor: "pointer",
-        border: viewStatus === "ALL" ? "2px solid blue" : ""
-        }}
-        onClick={() => setViewStatus("ALL")}
->
-      <h3>👥 Total Marked</h3>
-      <h2>{totalMarked}</h2>
-      </div>
-      </div>
+  {/* Leave */}
+  <div
+    className="card attendance-card"
+    style={{
+      textAlign: "center",
+      cursor: "pointer",
+      border: viewStatus === "LEAVE" ? "2px solid orange" : "",
+    }}
+    onClick={() => setViewStatus("LEAVE")}
+  >
+    <h3>🏖 Leave</h3>
+    <h2>{leaveCount}</h2>
+  </div>
+
+  {/* Total Marked */}
+  <div
+    className="card attendance-card"
+    style={{
+      textAlign: "center",
+      cursor: "pointer",
+      border: viewStatus === "MARKED" ? "2px solid #7c3aed" : "",
+    }}
+    onClick={() => setViewStatus("MARKED")}
+  >
+    <h3>👥 Total Marked</h3>
+    <h2>{totalMarked}</h2>
+  </div>
+</div>
       <div
         className="card"
         style={{
@@ -250,10 +270,21 @@ export default function Attendance() {
     selectedDepartment === "ALL" ||
     emp.department === selectedDepartment;
 
-  if (viewStatus === "ALL") {
+  // Show all employees
+  if (viewStatus === "EMPLOYEES") {
     return matchesSearch && matchesDepartment;
   }
 
+  // Show only marked employees
+  if (viewStatus === "MARKED") {
+    return (
+      existing &&
+      matchesSearch &&
+      matchesDepartment
+    );
+  }
+
+  // Present / Absent / Leave
   return (
     existing &&
     existing.status === viewStatus &&
