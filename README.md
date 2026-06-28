@@ -160,7 +160,7 @@ admin123
 
 ### Attendance Management
 
-![Attendance Management](attendance-management.jpeg)
+![Attendance Management]![alt text](attendance-management.jpeg)
 
 ---
 
