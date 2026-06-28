@@ -251,8 +251,7 @@ export default function Attendance() {
     emp.department === selectedDepartment;
 
   if (viewStatus === "ALL") {
-    // Show only employees whose attendance is marked
-    return existing && matchesSearch && matchesDepartment;
+    return matchesSearch && matchesDepartment;
   }
 
   return (
